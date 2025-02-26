@@ -7,14 +7,67 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tv_hello"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/simple_service"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="text"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Service"
+        android:layout_marginTop="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/foreground_service"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Foreground Service"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/simple_service" />
+
+    <Button
+        android:id="@+id/intent_service"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Intent Service"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/foreground_service" />
+
+    <Button
+        android:id="@+id/job_dispatcher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Job Dispatcher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/intent_service" />
+
+    <Button
+        android:id="@+id/job_intent_service"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Job Intent Service"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/job_dispatcher" />
+
+    <Button
+        android:id="@+id/alarm_manager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Alarm Manager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/job_intent_service" />
+
+    <Button
+        android:id="@+id/work_manager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Work Manager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/alarm_manager" />
 </androidx.constraintlayout.widget.ConstraintLayout>
