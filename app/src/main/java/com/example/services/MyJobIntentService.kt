@@ -8,25 +8,25 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
 
-class MyIntentSecondService: IntentService(NAME) {
+class MyJobIntentService : JobIntentService() {
 
     // жц сервисов
     override fun onCreate() { // создаётся
         super.onCreate()
         log("onCreate")
-        setIntentRedelivery(true) // START STICKY, intent будет сохранен
     }
 
-    override fun onHandleIntent(intent: Intent?) {
+    override fun onHandleWork(intent: Intent) {
         log("onHandleIntent")
-        val page = intent?.getIntExtra(PAGE, 0) ?: 0
+        val page = intent.getIntExtra(PAGE, 0) ?: 0
         for (i in 0 until 3) {
             Thread.sleep(1000)
             log("Timer $i $page")
         }
-    } // Выполняется не в главном потоке
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -34,18 +34,27 @@ class MyIntentSecondService: IntentService(NAME) {
     } // умирает
 
     private fun log(message: String) {
-        Log.d("SERVICE_TAG", "MyIntentSecondService: $message")
+        Log.d("SERVICE_TAG", "MyJobIntentService: $message")
     }
 
     companion object {
-        fun newIntent(context: Context, page: Int): Intent {
-            return Intent(context, MyIntentSecondService::class.java).apply {
+        private fun newIntent(context: Context, page: Int): Intent {
+            return Intent(context, MyJobIntentService::class.java).apply {
                 putExtra(PAGE, page)
             }
         }
 
-        private const val NAME = "MyIntentSecondService"
+        fun enqueue(context: Context, page: Int) {
+            enqueueWork(
+                context,
+                MyJobIntentService::class.java,
+                JOB_ID,
+                newIntent(context, page)
+            )
+        }
+
         private const val PAGE = "page"
+        private const val JOB_ID = 111
     }
 
 }
