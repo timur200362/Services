@@ -1,56 +1,41 @@
 package com.example.services
 
+import android.app.IntentService
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
-class MyForegroundService: Service() {
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+class MyIntentService: IntentService(NAME) {
 
     // жц сервисов
     override fun onCreate() { // создаётся
         super.onCreate()
         log("onCreate")
+        setIntentRedelivery(true) // START STICKY, intent будет сохранен
         createNotificationChannel()
         startForeground(NOTIFICATION_ID, createNotification())
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        log("onStartCommand")
-        coroutineScope.launch {
-            for (i in 0 until 3) {
-                delay(1000)
-                log("Timer $i")
-            }
-            stopSelf() // остановка сервиса
+    override fun onHandleIntent(p0: Intent?) {
+        log("onHandleIntent")
+        for (i in 0 until 3) {
+            Thread.sleep(1000)
+            log("Timer $i")
         }
-        return START_STICKY
-    } // работа с сервисом
+    } // Выполняется не в главном потоке
 
     override fun onDestroy() {
         super.onDestroy()
-        coroutineScope.cancel()
         log("onDestroy")
     } // умирает
 
-    override fun onBind(p0: Intent?): IBinder? {
-        TODO("Not yet implemented")
-    }
-
     private fun log(message: String) {
-        Log.d("SERVICE_TAG", "MyForegroundService: $message")
+        Log.d("SERVICE_TAG", "MyIntentService: $message")
     }
 
     private fun createNotificationChannel() {
@@ -73,11 +58,12 @@ class MyForegroundService: Service() {
 
     companion object {
         fun newIntent(context: Context): Intent {
-            return Intent(context, MyForegroundService::class.java)
+            return Intent(context, MyIntentService::class.java)
         }
 
         private const val CHANNEL_ID = "channel_id"
         private const val CHANNEL_NAME = "channel_name"
         private const val NOTIFICATION_ID = 1
+        private const val NAME = "MyIntentService"
     }
 }
