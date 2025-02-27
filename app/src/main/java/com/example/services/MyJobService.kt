@@ -1,14 +1,8 @@
 package com.example.services
 
-import android.app.Service
 import android.app.job.JobParameters
 import android.app.job.JobService
-import android.content.Context
-import android.content.Intent
-import android.os.Build
-import android.os.IBinder
 import android.util.Log
-import androidx.annotation.RequiresApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -39,7 +33,7 @@ class MyJobService: JobService() {
 
     override fun onStopJob(p0: JobParameters?): Boolean {
         log("onStopJob")
-        return true
+        return true // перезапуск сервиса после его остановки
     }
 
     override fun onDestroy() {
@@ -49,6 +43,10 @@ class MyJobService: JobService() {
     } // умирает
 
     private fun log(message: String) {
-        Log.d("SERVICE_TAG", "MyService: $message")
+        Log.d("SERVICE_TAG", "MyJobService: $message")
+    }
+
+    companion object {
+        const val JOB_ID = 111
     }
 }
